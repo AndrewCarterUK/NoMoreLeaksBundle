@@ -1,7 +1,6 @@
 filter:
     paths:
-        - EventListener/*
-        - Resetter/*
+        - src/*
 
 checks:
     php:

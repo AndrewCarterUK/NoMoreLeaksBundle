@@ -18,7 +18,12 @@
     },
     "autoload": {
         "psr-4": {
-            "AndrewCarterUK\\NoMoreLeaksBundle\\": ""
+            "AndrewCarterUK\\NoMoreLeaksBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AndrewCarterUK\\NoMoreLeaksBundle\\Tests\\": "tests/"
         }
     }
 }

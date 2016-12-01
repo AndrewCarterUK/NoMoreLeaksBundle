@@ -2,13 +2,12 @@
 <phpunit bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="NoMoreLeaksBundle Test Suite">
-            <directory>Tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-           <directory>EventListener</directory>
-           <directory>Resetter</directory>
+           <directory>src</directory>
         </whitelist>
     </filter>
 </phpunit>
