@@ -11,7 +11,10 @@ class TerminateListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new TerminateListener();
         $resetter = new MockResetter();
 
-        $event = $this->createMock('Symfony\\Component\\HttpKernel\\Event\\PostResponseEvent');
+        $event = $this
+            ->getMockBuilder('Symfony\\Component\\HttpKernel\\Event\\PostResponseEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $listener->addResetter($resetter);
 
