@@ -11,4 +11,4 @@ checks:
 tools:
     external_code_coverage:
         enabled: true
-runs: 1
+        runs: 1
