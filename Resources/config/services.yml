@@ -1,0 +1,16 @@
+services:
+    no_more_leaks.listener.terminate:
+        class: AndrewCarterUK\NoMoreLeaksBundle\EventListener\TerminateListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.terminate, priority: 2048 }
+
+    # Resetter Prototypes
+    no_more_leaks.resetter.doctrine_entity_manager_resetter_prototype:
+        abstract: true
+        class: AndrewCarterUK\NoMoreLeaksBundle\Resetter\DoctrineEntityManagerResetter
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    no_more_leaks.resetter.monolog_prototype:
+        abstract: true
+        class: AndrewCarterUK\NoMoreLeaksBundle\Resetter\MonologResetter
+        arguments: ["@logger"]
