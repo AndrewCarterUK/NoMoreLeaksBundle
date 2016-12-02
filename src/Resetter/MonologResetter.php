@@ -4,6 +4,7 @@ namespace AndrewCarterUK\NoMoreLeaksBundle\Resetter;
 
 use AndrewCarterUK\NoMoreLeaksBundle\Util;
 use Monolog\Logger;
+use Monolog\Handler\HandlerInterface;
 
 class MonologResetter implements ResetterInterface
 {
@@ -38,32 +39,30 @@ class MonologResetter implements ResetterInterface
         }
     }
 
-    private function resetHandler($handler)
+    private function resetHandler(HandlerInterface $handler)
     {
         $class = get_class($handler);
 
         $prefix = 'Monolog\\Handler\\';
 
-        if (substr($class, 0, strlen($prefix)) != $prefix) {
-           return;
-        }
+        if (substr($class, 0, strlen($prefix)) == $prefix) {
+            $handlerName = substr($class, strlen($prefix));
 
-        $handlerName = substr($class, strlen($prefix));
+            if ('FingersCrossedHandler' == $handlerName) {
+                $handler->clear();
+            } elseif ('BufferHandler' == $handlerName || 'StreamHandler' == $handlerName) {
+                $handler->close();
+            }
 
-        if ('FingersCrossedHandler' == $handlerName) {
-            $handler->clear();
-        } elseif ('BufferHandler' == $handlerName || 'StreamHandler' == $handlerName) {
-            $handler->close();
-        }
+            if (property_exists($handler, 'handler')) {
+                $subHandler = Util::readProperty($handler, 'handler');
+                $this->resetHandler($subHandler);
+            }
 
-        if (property_exists($handler, 'handler')) {
-            $subHandler = Util::readProperty($handler, 'handler');
-            $this->resetHandler($subHandler);
-        }
-
-        if (property_exists($handler, 'handlers')) {
-            $subHandlers = Util::readProperty($handler, 'handlers');
-            $this->resetHandlers($subHandlers);
+            if (property_exists($handler, 'handlers')) {
+                $subHandlers = Util::readProperty($handler, 'handlers');
+                $this->resetHandlers($subHandlers);
+            }
         }
     }
 }
