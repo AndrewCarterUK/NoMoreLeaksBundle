@@ -2,6 +2,7 @@
 
 namespace AndrewCarterUK\NoMoreLeaksBundle\Resetter;
 
+use AndrewCarterUK\NoMoreLeaksBundle\Util;
 use Monolog\Logger;
 
 class MonologResetter implements ResetterInterface
@@ -56,22 +57,13 @@ class MonologResetter implements ResetterInterface
         }
 
         if (property_exists($handler, 'handler')) {
-            $subHandler = $this->readProperty($handler, 'handler');
+            $subHandler = Util::readProperty($handler, 'handler');
             $this->resetHandler($subHandler);
         }
 
         if (property_exists($handler, 'handlers')) {
-            $subHandlers = $this->readProperty($handler, 'handlers');
+            $subHandlers = Util::readProperty($handler, 'handlers');
             $this->resetHandlers($subHandlers);
         }
-    }
-
-    private function readProperty($object, $property)
-    {
-        $closure = \Closure::bind(function () use ($object, $property) {
-            return $object->{$property};
-        }, null, $object);
-
-        return $closure();
     }
 }

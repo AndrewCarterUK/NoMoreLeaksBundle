@@ -2,6 +2,7 @@
 
 namespace AndrewCarterUK\NoMoreLeaksBundle\Resetter;
 
+use AndrewCarterUK\NoMoreLeaksBundle\Util;
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\DBAL\Logging\LoggerChain;
@@ -43,20 +44,11 @@ class DoctrineEntityManagerResetter implements ResetterInterface
             $sqlLogger->queries = array();
             $sqlLogger->currentQuery = 0;
         } elseif ($sqlLogger instanceof LoggerChain) {
-            $sqlLoggers = $this->readProperty($sqlLogger, 'loggers');
+            $sqlLoggers = Util::readProperty($sqlLogger, 'loggers');
 
             foreach ($sqlLoggers as $sqlLogger) {
                 $this->resetLogger($sqlLogger);
             }
         }
-    }
-
-    private function readProperty($object, $property)
-    {
-        $closure = \Closure::bind(function () use ($object, $property) {
-            return $object->{$property};
-        }, null, $object);
-
-        return $closure();
     }
 }
